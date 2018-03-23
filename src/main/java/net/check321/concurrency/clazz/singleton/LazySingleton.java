@@ -6,18 +6,19 @@ package net.check321.concurrency.clazz.singleton;
 * @author check321
 * @date 2018/3/20 22:17
 */
-public class LazySingleton implements Singleton<LazySingleton>{
+public class LazySingleton{
 
     // 私有化构造
-    private LazySingleton(){};
+    private LazySingleton(){}
 
     // 单例对象
     private static LazySingleton instance;
 
-    public LazySingleton getInstance(){
+    public static LazySingleton getInstance(){
         if(null == instance){
             instance = new LazySingleton();
         }
         return instance;
-    };
+    }
+
 }

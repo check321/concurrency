@@ -8,6 +8,7 @@ package net.check321.concurrency.clazz.threadLocal;
  * @date 2018/3/22 22:24
  */
 public class RequestHolder {
+
     // 请求容器
     private final static ThreadLocal<Long> requestHolder = new ThreadLocal<>();
 

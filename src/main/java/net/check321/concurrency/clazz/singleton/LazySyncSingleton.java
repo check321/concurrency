@@ -1,11 +1,16 @@
 package net.check321.concurrency.clazz.singleton;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.concurrent.Semaphore;
+
 /**
  * @author check321
  * @title 懒汉双重同步锁式单例
  * @description 同步化实例获取过程 但因处理器与编译器的指令重排序优化 依然造成线程不安全
  * @date 2018/3/20 22:26
  */
+@Slf4j
 public class LazySyncSingleton {
 
     private LazySyncSingleton() {
@@ -37,5 +42,12 @@ public class LazySyncSingleton {
             }
         }
         return instance;
+    }
+
+    public static void main(String[] args) {
+
+        Semaphore  semaphore =  new Semaphore(1);
+        int i = Runtime.getRuntime().availableProcessors();
+        log.info("cpu : {}",i);
     }
 }
