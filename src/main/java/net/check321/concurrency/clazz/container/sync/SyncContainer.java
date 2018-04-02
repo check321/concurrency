@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class SyncContainer {
 
-    static List<Integer> container = new Vector<>();
+    static List<Integer> container = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
         init();

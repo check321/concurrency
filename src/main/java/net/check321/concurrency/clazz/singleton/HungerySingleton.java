@@ -1,5 +1,10 @@
 package net.check321.concurrency.clazz.singleton;
 
+
+import sun.awt.Mutex;
+
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+
 /**
 * @title 饿汉单例
 * @description 单例类装载时创建 线程安全
@@ -16,6 +21,7 @@ public class HungerySingleton {
     public static HungerySingleton getInstance(){
         return instance;
     }
+
 
 
 }

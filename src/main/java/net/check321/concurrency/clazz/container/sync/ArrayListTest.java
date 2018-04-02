@@ -1,4 +1,4 @@
-package net.check321.concurrency.clazz.container.concurrency;
+package net.check321.concurrency.clazz.container.sync;
 
 import lombok.extern.slf4j.Slf4j;
 

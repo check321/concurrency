@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 
 /**
  * @author check321
- * @title 可循环Barrier
+ * @title AQS同步组件-同步屏障
  * @description 可循环线程同步器
  * @date 2018/3/27 23:28
  */
@@ -14,35 +14,46 @@ import java.util.concurrent.*;
 public class CyclicBarrierTest {
 
     // 线程数
-    private final static int threadCount = 30;
+    private final static int threadCount = 5;
 
-    private final static CyclicBarrier cyclicBarrier = new CyclicBarrier(3, () -> {
-        log.info("lambda callback is runing...");
+    // 该构造参数为barrier-action 在线程到达屏障后优先执行该函数逻辑
+    private final static CyclicBarrier cyclicBarrier = new CyclicBarrier(threadCount, () -> {
+        log.info("callback is runing...");
+    });
+
+    // 该构造参数为barrier-action 在线程到达屏障后优先执行该函数逻辑
+    private final static CyclicBarrier mainBarrier = new CyclicBarrier(1, () -> {
+        log.info("mainBarrier callback is runing...");
+        log.info("final barrier: {}",cyclicBarrier.getNumberWaiting());
     });
 
     public static void main(String[] args) throws Exception {
+
         // 线程池
         ExecutorService executors = Executors.newCachedThreadPool();
-
-        for (int i = 0; i < threadCount; i++) {
-            Thread.sleep(1000);
-            final int threadNum = i;
-            executors.execute(() -> {
-                try {
-                    execute(threadNum);
-                } catch (Exception e) {
-                    log.error("error : ", e);
-                }
-            });
+        try {
+            for (int i = 0; i < threadCount; i++) {
+                final int threadNum = i;
+                executors.execute(() -> {
+                    try {
+                        execute(threadNum);
+                    } catch (Exception e) {
+                        log.error("error : ", e);
+                    }
+                });
+            }
+        } finally {
+            executors.shutdown();
         }
-
-        executors.shutdown();
     }
 
     private static void execute(int threadNum) throws InterruptedException, BrokenBarrierException {
         Thread.sleep(2000);
         log.info("thread {} get ready!", threadNum);
         cyclicBarrier.await();
-        log.info("thread {} finished!",threadNum);
+        log.info("thread {} finished!", threadNum);
+        if(threadNum == threadCount - 1){
+            mainBarrier.await();
+        }
     }
 }
